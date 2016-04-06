@@ -309,15 +309,15 @@ class Song extends database_object implements media, library_item
      */
     public function __construct($id = null, $limit_threshold = '')
     {
+        if (self::isCustomMetadataEnabled()) {
+            $this->initializeMetadata();
+        }
+
         if (!$id) {
             return false;
         }
 
         $this->id = intval($id);
-
-        if (self::isCustomMetadataEnabled()) {
-            $this->initializeMetadata();
-        }
 
         if ($info = $this->_get_info($limit_threshold)) {
             foreach ($info as $key => $value) {
@@ -2110,4 +2110,3 @@ class Song extends database_object implements media, library_item
         return $deleted;
     }
 } // end of song class
-

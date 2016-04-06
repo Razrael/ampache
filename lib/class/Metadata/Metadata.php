@@ -22,6 +22,8 @@
 
 namespace Lib\Metadata;
 
+use lib\Persistence\PersistenceManager;
+
 /**
  * Description of metadata
  *
@@ -53,6 +55,8 @@ trait Metadata
      */
     protected $disabledMetadataFields = array();
 
+    protected $persistaneManager;
+
     /**
      * Initialize the repository variables. Needs to be called first if the trait should do something.
      */
@@ -60,6 +64,7 @@ trait Metadata
     {
         $this->metadataRepository      = new \Lib\Metadata\Repository\Metadata();
         $this->metadataFieldRepository = new \Lib\Metadata\Repository\MetadataField();
+        $this->persistaneManager       = PersistenceManager::getInstance();
     }
 
 
@@ -98,12 +103,13 @@ trait Metadata
 
     public function updateOrInsertMetadata(\Lib\Metadata\Model\MetadataField $field, $data)
     {
-        /* @var $metadata Model\Metadata */
-        $metadata = $this->metadataRepository->findByObjectIdAndFieldAndType($this->id, $field, get_class($this));
-        if ($metadata) {
-            $object = reset($metadata);
-            $object->setData($data);
-            $this->metadataRepository->update($object);
+        /* @var $stmt \PDOStatement */
+        $stmt = $this->metadataRepository->findByObjectIdAndFieldAndType($this->id, $field, get_class($this));
+        if ($stmt->rowCount()) {
+            /* @var $metadata Model\Metadata */
+            $metadata = $stmt->fetch();
+            $metadata->setData($data);
+            $this->metadataRepository->update($metadata);
         } else {
             $this->addMetadata($field, $data);
         }
@@ -134,10 +140,8 @@ trait Metadata
      */
     public function getField($propertie, $public = true)
     {
-        $fields = $this->metadataFieldRepository->findByName($propertie);
-        if (count($fields)) {
-            $field = reset($fields);
-        } else {
+        $field = $this->metadataFieldRepository->findByName($propertie);
+        if (!$field) {
             $field = $this->createField($propertie, $public);
         }
         return $field;
@@ -149,7 +153,7 @@ trait Metadata
      */
     public static function isCustomMetadataEnabled()
     {
-        return (boolean) \AmpConfig::get('enable_custom_metadata');
+        return (boolean)\AmpConfig::get('enable_custom_metadata');
     }
 
     /**
@@ -159,16 +163,19 @@ trait Metadata
     public function getDisabledMetadataFields()
     {
         if (!$this->disabledMetadataFields) {
-            $fields = array();
-            $ids    = explode(',', \AmpConfig::get('disabled_custom_metadata_fields'));
-            foreach ($ids as $id) {
-                $field = $this->metadataFieldRepository->findById($id);
-                if ($field) {
-                    $fields[] = $field->getName();
+            $fields      = array();
+            $fieldString = \AmpConfig::get('disabled_custom_metadata_fields');
+            if ($fieldString) {
+                $ids = explode(',', $fieldString);
+                foreach ($ids as $id) {
+                    $field = $this->metadataFieldRepository->findById($id);
+                    if ($field) {
+                        $fields[] = $field->getName();
+                    }
                 }
             }
             $this->disabledMetadataFields = array_merge(
-                    $fields, explode(',', \AmpConfig::get('disabled_custom_metadata_fields_input'))
+                $fields, explode(',', \AmpConfig::get('disabled_custom_metadata_fields_input'))
             );
         }
         return $this->disabledMetadataFields;

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "26aee2ac9f0de6f482d3dac60e3e00a7",
-    "content-hash": "2244cb24151474f372fedc5c54823bc2",
+    "hash": "5435ca6ad883a2624cf111cddba2155c",
+    "content-hash": "8d9bbce179879137a3925bf5c754b6fa",
     "packages": [
         {
             "name": "Afterster/php-echonest-api",
@@ -1296,12 +1296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "d77b2d2e172f25622c61cdecde8edbf07195e5b0"
+                "reference": "995da7d5e8a7ac2b5ef076c64e9be66d380ede4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/d77b2d2e172f25622c61cdecde8edbf07195e5b0",
-                "reference": "d77b2d2e172f25622c61cdecde8edbf07195e5b0",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/995da7d5e8a7ac2b5ef076c64e9be66d380ede4f",
+                "reference": "995da7d5e8a7ac2b5ef076c64e9be66d380ede4f",
                 "shasum": ""
             },
             "require": {
@@ -1324,7 +1324,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2016-02-24 13:20:20"
+            "time": "2016-03-22 21:50:11"
         },
         {
             "name": "jeromeetienne/jquery-qrcode",
@@ -1346,7 +1346,7 @@
                     ]
                 }
             },
-            "time": "2015-04-15 13:47:34"
+            "time": "2016-01-12 10:51:25"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1456,6 +1456,46 @@
                 }
             },
             "time": "2015-06-13 00:50:21"
+        },
+        {
+            "name": "lichtner/fluentpdo",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fpdo/fluentpdo.git",
+                "reference": "8a34b9c6742544bda9d193e814101cd065d88875"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fpdo/fluentpdo/zipball/8a34b9c6742544bda9d193e814101cd065d88875",
+                "reference": "8a34b9c6742544bda9d193e814101cd065d88875",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "FluentPDO/FluentPDO.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0",
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Marek Lichtner",
+                    "homepage": "http://licht.sk/"
+                }
+            ],
+            "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
+            "homepage": "http://fluentpdo.com/",
+            "keywords": [
+                "database",
+                "dbal",
+                "pdo"
+            ],
+            "time": "2015-02-24 20:50:47"
         },
         {
             "name": "maennchen/zipstream-php",

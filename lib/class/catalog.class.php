@@ -1628,6 +1628,7 @@ abstract class Catalog extends database_object
                     $field = $song->getField($tag);
                     $song->updateOrInsertMetadata($field, $value);
                 }
+                \lib\Persistence\PersistenceManager::getInstance()->persistAll();
             }
         }
 

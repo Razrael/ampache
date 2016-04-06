@@ -67,7 +67,8 @@
 		"aterrien/jQuery-Knob": "1.2.*",
 		"pklauzinski/jscroll": "2.*",
 		"kumailht/responsive-elements": "dev-master",
-		"swisnl/jQuery-contextMenu": "2.1.*"
+		"swisnl/jQuery-contextMenu": "2.1.*",
+		"lichtner/fluentpdo": "^1.0"
     },
 	
 	"repositories":

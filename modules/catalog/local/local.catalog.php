@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+use lib\Persistence\PersistenceManager;
 
 /**
  * Local Catalog Class
@@ -765,6 +766,7 @@ class Catalog_local extends Catalog
                 }
                 $results = array_diff_key($results, array_flip($song->getDisabledMetadataFields()));
                 self::add_metadata($song, $results);
+                PersistenceManager::getInstance()->persistAll();
             }
             $this->added_songs_to_gather[] = $id;
 

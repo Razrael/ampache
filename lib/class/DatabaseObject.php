@@ -42,13 +42,20 @@ abstract class DatabaseObject
     public function __construct()
     {
         $this->remapCamelcase();
-        $this->initializeChildObjects();
+        if ($this->id) {
+            $this->initializeChildObjects();
+        }
         //$this->originalData = get_object_vars($this);
     }
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     protected function isPropertyDirty($property)
@@ -89,7 +96,7 @@ abstract class DatabaseObject
             }
         }
     }
-    
+
     protected function fromCamelCase($properties)
     {
         $data = array();
@@ -113,5 +120,10 @@ abstract class DatabaseObject
                 $this->$field = $repository->findById($this->$field);
             }
         }
+    }
+
+    public function __toString()
+    {
+        return (string)$this->getId();
     }
 }

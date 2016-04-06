@@ -35,4 +35,11 @@ class MetadataField extends \Lib\Repository
     {
         \Dba::write('DELETE FROM `metadata_field` USING `metadata_field` LEFT JOIN `metadata` ON `metadata`.`field` = `metadata_field`.`id` WHERE `metadata`.`id` IS NULL');
     }
+
+    public function findByName($property)
+    {
+        /* @var $fields \PDOStatement */
+        $fields = parent::findByName($property);
+        return $fields->rowCount() ? $fields->fetch() : null;
+    }
 }

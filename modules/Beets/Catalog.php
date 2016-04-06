@@ -24,6 +24,7 @@
 namespace Beets;
 
 use AmpConfig;
+use lib\Persistence\PersistenceManager;
 use UI;
 use Dba;
 use Song;
@@ -68,7 +69,7 @@ abstract class Catalog extends \Catalog
     { // TODO: Basic constructer should be provided from parent
         if ($catalog_id) {
             $this->id = intval($catalog_id);
-            $info     = $this->get_info($catalog_id);
+            $info = $this->get_info($catalog_id);
 
             foreach ($info as $key => $value) {
                 $this->$key = $value;
@@ -246,7 +247,7 @@ abstract class Catalog extends \Catalog
      */
     public function clean_catalog_proc()
     {
-        $parser      = $this->getParser();
+        $parser = $this->getParser();
         $this->songs = $this->getAllSongfiles();
         $parser->setHandler($this, 'removeFromDeleteList');
         $parser->start($this->listCommand);
@@ -281,7 +282,7 @@ abstract class Catalog extends \Catalog
     {
         $ids = implode(',', array_keys($songs));
         $sql = "DELETE FROM `song` WHERE `id` IN " .
-                '(' . $ids . ')';
+            '(' . $ids . ')';
         Dba::write($sql);
     }
 
@@ -292,7 +293,7 @@ abstract class Catalog extends \Catalog
      */
     protected function getIdFromPath($path)
     {
-        $sql        = "SELECT `id` FROM `song` WHERE `file` = ?";
+        $sql = "SELECT `id` FROM `song` WHERE `file` = ?";
         $db_results = Dba::read($sql, array($path));
 
         $row = Dba::fetch_row($db_results);
@@ -305,7 +306,7 @@ abstract class Catalog extends \Catalog
      */
     public function getAllSongfiles()
     {
-        $sql        = "SELECT `id`, `file` FROM `song` WHERE `catalog` = ?";
+        $sql = "SELECT `id`, `file` FROM `song` WHERE `catalog` = ?";
         $db_results = Dba::read($sql, array($this->id));
 
         $files = array();
@@ -380,5 +381,6 @@ abstract class Catalog extends \Catalog
             $field = $song->getField($tag);
             $song->updateOrInsertMetadata($field, $value);
         }
+        PersistenceManager::getInstance()->persistAll();
     }
 }

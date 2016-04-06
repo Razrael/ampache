@@ -36,7 +36,7 @@ abstract class Handler
      */
     protected $commandSeperator;
 
-    abstract protected function start($command);
+    abstract public function start($command);
 
     public function setHandler(Catalog $handler, $command)
     {

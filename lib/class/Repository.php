@@ -22,7 +22,9 @@
 
 namespace Lib;
 
+use lib\Database\DatabaseConnection;
 use Lib\Interfaces\Model;
+use lib\Persistence\PersistenceManager;
 
 /**
  * Description of Repository
@@ -32,13 +34,24 @@ use Lib\Interfaces\Model;
 class Repository
 {
     protected $modelClassName;
-    
+
     /**
      *
      * @var array Stores relation between SQL field name and class name so we
      * can initialize objects the right way
      */
     protected $fieldClassRelations = array();
+
+    /**
+     *
+     * @var persistenceManager
+     */
+    protected $persistenceManager;
+
+    public function __construct()
+    {
+        $this->persistenceManager = PersistenceManager::getInstance();
+    }
 
     protected function findBy($fields, $values)
     {
@@ -63,20 +76,30 @@ class Repository
      */
     public function findById($id)
     {
-        $rows = $this->findBy(array('id'), array($id));
-        return count($rows) ? reset($rows) : null;
+        $statement = $this->findBy(array('id'), array($id));
+        return $statement->rowCount() ? $statement->fetch() : null;
     }
 
+    /**
+     * Creates a query and returns the query object.
+     * The query object is traversable if its more than one row. Object is given back if only one row.
+     * @param $table
+     * @param array $field
+     * @param array $value
+     * @return mixed|\PDOStatement
+     */
     private function getRecords($table, $field = null, $value = null)
     {
-        $data = array();
-        $sql  = $this->assembleQuery($table, $field);
+        $dbh   = DatabaseConnection::getInstance();
+        $query = $dbh->from($table)
+            ->where(array_combine(
+                array_map(array($this, 'camelCaseToUnderscore'), $field),
+                $value
+            ))
+            ->asObject($this->modelClassName)
+            ->execute();
 
-        $statement = \Dba::read($sql, is_array($value) ? $value : array($value));
-        while ($object = \Dba::fetch_object($statement, $this->modelClassName)) {
-            $data[$object->getId()] = $object;
-        }
-        return $data;
+        return $query;
     }
 
     /**
@@ -90,8 +113,8 @@ class Repository
         if (preg_match('/^findBy(.*)$/', $name, $matches)) {
             $parts = explode('And', $matches[1]);
             return $this->findBy(
-                    $parts,
-                    $this->resolveObjects($arguments)
+                $parts,
+                $this->resolveObjects($arguments)
             );
         }
     }
@@ -101,66 +124,26 @@ class Repository
         $className = get_called_class();
         $nameParts = explode('\\', $className);
         $tableName = preg_replace_callback(
-                '/(?<=.)([A-Z])/',
-                function($m) {
-                    return '_' . strtolower($m[0]);
-                }, end($nameParts));
+            '/(?<=.)([A-Z])/',
+            function ($m) {
+                return '_' . strtolower($m[0]);
+            }, end($nameParts));
         return lcfirst($tableName);
     }
 
     public function add(DatabaseObject $object)
     {
-        $properties = $object->getDirtyProperties();
-        $this->setPrivateProperty(
-                $object,
-                'id',
-                $this->insertRecord($properties)
-        );
+        $this->persistenceManager->add($object);
     }
 
     public function update(DatabaseObject $object)
     {
-        if ($object->isDirty()) {
-            $properties = $object->getDirtyProperties();
-            $this->updateRecord($object->getId(), $properties);
-        }
+        $this->persistenceManager->update($object);
     }
 
     public function remove(DatabaseObject $object)
     {
-        $id = $object->getId();
-        $this->deleteRecord($id);
-    }
-
-    protected function insertRecord($properties)
-    {
-        $sql = 'INSERT INTO ' . $this->getTableName() . ' (' . implode(',', array_keys($properties)) . ')'
-                . ' VALUES(' . implode(',', array_fill(0, count($properties), '?')) . ')';
-        //print_r($properties);
-        \Dba::write(
-                $sql,
-                array_values($this->resolveObjects($properties))
-        );
-        return \Dba::insert_id();
-    }
-
-    protected function updateRecord($id, $properties)
-    {
-        $sql = 'UPDATE ' . $this->getTableName()
-                . ' SET ' . implode(',', $this->getKeyValuePairs($properties))
-                . ' WHERE id = ?';
-        $properties[] = $id;
-        \Dba::write(
-                $sql,
-                array_values($this->resolveObjects($properties))
-        );
-    }
-
-    protected function deleteRecord($id)
-    {
-        $sql = 'DELETE FROM ' . $this->getTableName()
-                . ' WHERE id = ?';
-        \Dba::write($sql, array($id));
+        $this->persistenceManager->remove($object);
     }
 
     protected function getKeyValuePairs($properties)
@@ -175,7 +158,7 @@ class Repository
     /**
      * Set a private or protected variable.
      * Only used in case where a property should not publicly writable
-     * @param Object $object
+     * @param Model|Object $object
      * @param string $property
      * @param mixed $value
      */
@@ -202,29 +185,8 @@ class Repository
         return $properties;
     }
 
-    /**
-     * Create query for one or multiple fields
-     * @param string $table
-     * @param array $fields
-     * @return string
-     */
-    public function assembleQuery($table, $fields)
-    {
-        $sql = 'SELECT * FROM ' . $table;
-        if ($fields) {
-            $sql .= ' WHERE ';
-            $sqlParts = array();
-            foreach ($fields as $field) {
-                $sqlParts[] = '`' . $this->camelCaseToUnderscore($field) . '` = ?';
-            }
-            $sql .= implode(' and ', $sqlParts);
-        }
-        
-        return $sql;
-    }
-
     public function camelCaseToUnderscore($string)
     {
-        return strtolower(preg_replace('/(?<=\\w)(?=[A-Z])/','_$1', $string));
+        return strtolower(preg_replace('/(?<=\\w)(?=[A-Z])/', '_$1', $string));
     }
 }
