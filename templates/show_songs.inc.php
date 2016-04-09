@@ -82,12 +82,12 @@ $thcount  = 8;
     </thead>
     <tbody id="sortableplaylist_<?php echo $browse->get_filter('album'); ?>">
         <?php
+            $songRepository = new \Lib\Media\Repository\Song();
             foreach ($object_ids as $song_id) {
-                $libitem = new Song($song_id, $limit_threshold);
-                $libitem->format();
+                $libitem = $songRepository->findById($song_id);
                 ?>
             <tr class="<?php echo UI::flip_class();
-                ?>" id="song_<?php echo $libitem->id;
+                ?>" id="song_<?php echo $libitem->getId();
                 ?>">
                 <?php require AmpConfig::get('prefix') . UI::find_template('show_song_row.inc.php');
                 ?>

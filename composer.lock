@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5435ca6ad883a2624cf111cddba2155c",
-    "content-hash": "8d9bbce179879137a3925bf5c754b6fa",
+    "hash": "8dda7ecca2df546a8f8afce5cad6a234",
+    "content-hash": "64b8cfdd8e31d6215cf08e1cc64f1c04",
     "packages": [
         {
             "name": "Afterster/php-echonest-api",
@@ -1349,6 +1349,50 @@
             "time": "2016-01-12 10:51:25"
         },
         {
+            "name": "jms/cg",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/cg-library.git",
+                "reference": "0af1113c7409b8636c5244bbae10b2e0ff792e9c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/cg-library/zipball/0af1113c7409b8636c5244bbae10b2e0ff792e9c",
+                "reference": "0af1113c7409b8636c5244bbae10b2e0ff792e9c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "CG\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "Toolset for generating PHP code",
+            "keywords": [
+                "code generation"
+            ],
+            "time": "2015-09-13 08:54:43"
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "v1.3.2",
             "source": {
@@ -1694,6 +1738,222 @@
                 "noty"
             ],
             "time": "2016-01-11 13:30:39"
+        },
+        {
+            "name": "nette/caching",
+            "version": "v2.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/caching.git",
+                "reference": "9bcb68939f4387a89dc7be0fb5dcaae98b87976b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/caching/zipball/9bcb68939f4387a89dc7be0fb5dcaae98b87976b",
+                "reference": "9bcb68939f4387a89dc7be0fb5dcaae98b87976b",
+                "shasum": ""
+            },
+            "require": {
+                "nette/finder": "~2.2",
+                "nette/utils": "~2.2",
+                "php": ">=5.4.4"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
+            },
+            "require-dev": {
+                "latte/latte": "~2.3.0",
+                "nette/di": "~2.3",
+                "nette/tester": "~1.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette Caching Component",
+            "homepage": "https://nette.org",
+            "time": "2016-02-22 01:58:50"
+        },
+        {
+            "name": "nette/finder",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/finder.git",
+                "reference": "ea8e796b42d542bd90e76f5b2a41c2c86a008256"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/finder/zipball/ea8e796b42d542bd90e76f5b2a41c2c86a008256",
+                "reference": "ea8e796b42d542bd90e76f5b2a41c2c86a008256",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "~2.2",
+                "php": ">=5.3.1"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
+            },
+            "require-dev": {
+                "nette/tester": "~1.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette Finder: Files Searching",
+            "homepage": "https://nette.org",
+            "time": "2015-10-20 17:15:41"
+        },
+        {
+            "name": "nette/reflection",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/reflection.git",
+                "reference": "6c39adc4661f5f7b64be7ee161b8f67d8174da4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/reflection/zipball/6c39adc4661f5f7b64be7ee161b8f67d8174da4d",
+                "reference": "6c39adc4661f5f7b64be7ee161b8f67d8174da4d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "nette/caching": "~2.2",
+                "nette/utils": "~2.2",
+                "php": ">=5.3.1"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
+            },
+            "require-dev": {
+                "nette/di": "~2.3",
+                "nette/tester": "~1.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette PHP Reflection Component",
+            "homepage": "https://nette.org",
+            "time": "2016-03-12 14:57:07"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v2.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "34ca4cd67bb768199aae2879eb8ad0ab016f2d8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/34ca4cd67bb768199aae2879eb8ad0ab016f2d8a",
+                "reference": "34ca4cd67bb768199aae2879eb8ad0ab016f2d8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
+            },
+            "require-dev": {
+                "nette/tester": "~1.0"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize() and toAscii()",
+                "ext-intl": "for script transliteration in Strings::webalize() and toAscii()",
+                "ext-mbstring": "to use Strings::lower() etc..."
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette Utility Classes",
+            "homepage": "https://nette.org",
+            "time": "2016-03-18 17:36:54"
         },
         {
             "name": "openid/php-openid",
@@ -3305,6 +3565,44 @@
                 "statistics"
             ],
             "time": "2015-10-16 20:41:35"
+        },
+        {
+            "name": "typo3fluid/fluid",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3Fluid/Fluid.git",
+                "reference": "e3bc20e60df6960a852a0829c7a0238f643808ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/e3bc20e60df6960a852a0829c7a0238f643808ac",
+                "reference": "e3bc20e60df6960a852a0829c7a0238f643808ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "*",
+                "phpunit/phpunit": "*",
+                "satooshi/php-coveralls": "*"
+            },
+            "bin": [
+                "bin/fluid"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3Fluid\\Fluid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "description": "The TYPO3 Fluid template rendering engine",
+            "time": "2016-03-15 17:01:42"
         },
         {
             "name": "vakata/jstree",

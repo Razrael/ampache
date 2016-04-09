@@ -20,7 +20,11 @@
  *
  */
 
-namespace Lib;
+namespace Lib\Database;
+
+use Lib\Service\Proxy\Initializer;
+use Lib\Service\Proxy;
+use Nette\Reflection\ClassType;
 
 /**
  * Description of Model
@@ -113,11 +117,30 @@ abstract class DatabaseObject
      */
     public function initializeChildObjects()
     {
-        foreach ($this->fieldClassRelations as $field => $repositoryName) {
-            if (class_exists($repositoryName)) {
-                /* @var $repository Repository */
-                $repository   = new $repositoryName;
-                $this->$field = $repository->findById($this->$field);
+        $r = new ClassType($this);
+        foreach ($r->properties as $prop) {
+            $var = $prop->getAnnotation('var');
+            if ($var) {
+                if (class_exists($var)) {
+                    $proxy       = Proxy::instantiateProxyClass($var);
+                    $id          = $this->{$prop->name};
+                    $initializer = new Initializer(function($object) use ($prop, $id, $var) {
+                        $class = \Lib\Service\Repository::getClassNameFromModel($var);
+                        $repository   = new $class;
+                        $obj = $repository->findById($id);
+                        $vars = (new ClassType($var))->properties;
+                        $reflectionClass    = new \ReflectionClass(get_class($object));
+                        foreach ($vars as $var) {
+                            $ReflectionProperty = $reflectionClass->getProperty($var->name);
+                            $ReflectionProperty->setAccessible(true);
+                            $ReflectionProperty->setValue($object, $obj->{'get' . ucfirst($var->name)}());
+                        }
+                    });
+                    $proxy->setLazyInitializer($initializer);
+                    $this->{$prop->name} = $proxy;
+                } elseif (preg_match('/(.*)<(.*)>/', $var, $matches)) {
+                    //                    var_dump($matches);
+                }
             }
         }
     }

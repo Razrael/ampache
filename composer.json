@@ -68,7 +68,10 @@
 		"pklauzinski/jscroll": "2.*",
 		"kumailht/responsive-elements": "dev-master",
 		"swisnl/jQuery-contextMenu": "2.1.*",
-		"lichtner/fluentpdo": "^1.0"
+		"lichtner/fluentpdo": "^1.0",
+		"typo3fluid/fluid": "^1.0",
+		"jms/cg": "^1.1",
+		"nette/reflection": "^2.3"
     },
 	
 	"repositories":

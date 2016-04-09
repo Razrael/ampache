@@ -3,7 +3,7 @@
 /**
  *
  * LICENSE: GNU General Public License, version 2 (GPLv2)
- * Copyright 2001 - 2015 Ampache.org
+ * Copyright 2001 - 2016 Ampache.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License v2
@@ -20,27 +20,22 @@
  *
  */
 
-namespace Lib\Database;
+namespace Lib\Service;
 
-use Lib\Singleton;
+use Lib\Interfaces\Model;
 
-class DatabaseConnection extends \FluentPDO
+class Repository
 {
-
-    // Alias constructor because we need to also have one.
-    use Singleton {
-        Singleton::__construct as private __singletonConstructor;
-    }
-
     /**
-     * @var \FluentPDO
+     * Get Repository class name from model.
+     * Only works with classes like \something\Model\MyModel
+     * @param Model $model
+     * @return string
      */
-    protected static $instance;
-
-    public function __construct()
+    public static function getClassNameFromModel($class)
     {
-        $this->__singletonConstructor();
-        parent::__construct(\Dba::dbh());
-        $this->getPdo()->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+        $parts                    = explode('\\', $class);
+        $parts[count($parts) - 2] = 'Repository';
+        return implode('\\', $parts);
     }
 }

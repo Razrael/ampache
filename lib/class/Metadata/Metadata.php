@@ -22,7 +22,7 @@
 
 namespace Lib\Metadata;
 
-use lib\Persistence\PersistenceManager;
+use Lib\Persistence\PersistenceManager;
 
 /**
  * Description of metadata
@@ -33,13 +33,13 @@ trait Metadata
 {
     /**
      *
-     * @var Repository\Metadata
+     * @var Lib\Metadata\Repository\Metadata
      */
     protected $metadataRepository;
 
     /**
      *
-     * @var Repository\MetadataField
+     * @var Lib\Metadata\Repository\MetadataField
      */
     protected $metadataFieldRepository;
 
@@ -70,7 +70,7 @@ trait Metadata
 
     /**
      *
-     * @return Model\Metadata
+     * @return Lib\Metadata\Model\Metadata
      */
     public function getMetadata()
     {
@@ -79,9 +79,9 @@ trait Metadata
 
     /**
      *
-     * @param Model\Metadata $metadata
+     * @param Lib\Metadata\Model\Metadata $metadata
      */
-    public function deleteMetadata(Model\Metadata $metadata)
+    public function deleteMetadata(Lib\Metadata\Model\Metadata $metadata)
     {
         $this->metadataRepository->remove($metadata);
     }
@@ -106,7 +106,7 @@ trait Metadata
         /* @var $stmt \PDOStatement */
         $stmt = $this->metadataRepository->findByObjectIdAndFieldAndType($this->id, $field, get_class($this));
         if ($stmt->rowCount()) {
-            /* @var $metadata Model\Metadata */
+            /* @var $metadata Lib\Metadata\Model\Metadata */
             $metadata = $stmt->fetch();
             $metadata->setData($data);
             $this->metadataRepository->update($metadata);
@@ -136,7 +136,7 @@ trait Metadata
      *
      * @param string $propertie
      * @param boolean $public
-     * @return Model\MetadataField
+     * @return Lib\Metadata\Model\MetadataField
      */
     public function getField($propertie, $public = true)
     {

@@ -3,7 +3,7 @@
 /**
  *
  * LICENSE: GNU General Public License, version 2 (GPLv2)
- * Copyright 2001 - 2015 Ampache.org
+ * Copyright 2001 - 2016 Ampache.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License v2
@@ -20,27 +20,29 @@
  *
  */
 
-namespace Lib\Database;
+namespace Lib\Service\Proxy;
 
-use Lib\Singleton;
+use CG\Proxy\LazyInitializerInterface;
 
-class DatabaseConnection extends \FluentPDO
+class Initializer implements LazyInitializerInterface
 {
-
-    // Alias constructor because we need to also have one.
-    use Singleton {
-        Singleton::__construct as private __singletonConstructor;
-    }
+    private $lastObject;
 
     /**
-     * @var \FluentPDO
+     * Initializer constructor.
      */
-    protected static $instance;
-
-    public function __construct()
+    public function __construct($lazyFunction)
     {
-        $this->__singletonConstructor();
-        parent::__construct(\Dba::dbh());
-        $this->getPdo()->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+        $this->lazyFunction = $lazyFunction;
+    }
+
+    public function initializeObject($object)
+    {
+        call_user_func($this->lazyFunction, $object);
+    }
+
+    public function getLastObject()
+    {
+        return $this->lastObject;
     }
 }

@@ -20,27 +20,10 @@
  *
  */
 
-namespace Lib\Database;
+namespace Lib\Media\Model;
 
-use Lib\Singleton;
+use Lib\Database\DatabaseObject;
 
-class DatabaseConnection extends \FluentPDO
+class Media extends DatabaseObject
 {
-
-    // Alias constructor because we need to also have one.
-    use Singleton {
-        Singleton::__construct as private __singletonConstructor;
-    }
-
-    /**
-     * @var \FluentPDO
-     */
-    protected static $instance;
-
-    public function __construct()
-    {
-        $this->__singletonConstructor();
-        parent::__construct(\Dba::dbh());
-        $this->getPdo()->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
-    }
 }

@@ -21,7 +21,7 @@
  *
  */
 
-namespace lib;
+namespace Lib;
 
 trait Singleton
 {

@@ -21,9 +21,9 @@
  *
  */
 
-namespace lib\Persistence;
+namespace Lib\Persistence;
 
-use lib\Singleton;
+use Lib\Singleton;
 
 /**
  * Singleton class to take care about persisting database objects

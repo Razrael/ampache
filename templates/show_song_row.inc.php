@@ -21,7 +21,7 @@
  */
 
 // Don't show disabled songs to normal users
-if ($libitem->enabled || Access::check('interface','50')) {
+if ($libitem->isEnabled() || Access::check('interface','50')) {
     ?>
 <td class="cel_play">
     <span class="cel_play_content">

@@ -20,11 +20,17 @@
  *
  */
 
-namespace Lib;
+namespace Lib\Database;
 
-use lib\Database\DatabaseConnection;
+use CG\Proxy\Enhancer;
+use CG\Proxy\LazyInitializerGenerator;
+use CG\Proxy\LazyInitializerInterface;
+use Lib\Database\DatabaseConnection;
+use Lib\Database\DatabaseObject;
 use Lib\Interfaces\Model;
-use lib\Persistence\PersistenceManager;
+use Lib\Media\Model\Album;
+use Lib\Persistence\LazyObjectStorage;
+use Lib\Persistence\PersistenceManager;
 
 /**
  * Description of Repository
@@ -41,6 +47,8 @@ class Repository
      * can initialize objects the right way
      */
     protected $fieldClassRelations = array();
+
+    public static $proxyMapping = [];
 
     /**
      *
@@ -61,7 +69,7 @@ class Repository
 
     /**
      *
-     * @return DatabaseObject[]
+     * @return Object[]
      */
     public function findAll()
     {
@@ -71,8 +79,8 @@ class Repository
 
     /**
      *
-     * @param type $id
-     * @return DatabaseObject
+     * @param int $id
+     * @return Object
      */
     public function findById($id)
     {
@@ -90,23 +98,33 @@ class Repository
      */
     private function getRecords($table, $field = null, $value = null)
     {
-        $dbh   = DatabaseConnection::getInstance();
-        $query = $dbh->from($table)
-            ->where(array_combine(
-                array_map(array($this, 'camelCaseToUnderscore'), $field),
-                $value
-            ))
-            ->asObject($this->modelClassName)
-            ->execute();
 
-        return $query;
+        //        $r = new \ReflectionClass(self::$proxyMapping[$this->modelClassName]);
+        //        $instance = $r->newInstanceWithoutConstructor();
+        //        $instance->setLazyInitializer(new Initializer());
+        //        var_dump($instance->getTitle());
+
+        $object = new LazyObjectStorage();
+        $object->setInitializer(function () use ($table, $field, $value) {
+            $dbh = DatabaseConnection::getInstance();
+            return $dbh->from($table)
+                ->where(array_combine(
+                    array_map(array($this, 'camelCaseToUnderscore'), $field),
+                    $value
+                ))
+                //                ->asObject(self::$proxyMapping[$this->modelClassName] ?: $this->modelClassName)
+                ->asObject($this->modelClassName)
+                ->execute();
+        });
+
+        return $object;
     }
 
     /**
      *
      * @param string $name
      * @param array $arguments
-     * @return DatabaseObject
+     * @return Object
      */
     public function __call($name, $arguments)
     {

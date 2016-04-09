@@ -27,7 +27,7 @@ namespace Lib\Metadata\Repository;
  *
  * @author raziel
  */
-class MetadataField extends \Lib\Repository
+class MetadataField extends \Lib\Database\Repository
 {
     protected $modelClassName = '\Lib\Metadata\Model\MetadataField';
 

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-use lib\Persistence\PersistenceManager;
+use Lib\Persistence\PersistenceManager;
 
 /**
  * Local Catalog Class

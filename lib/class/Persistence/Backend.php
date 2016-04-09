@@ -21,10 +21,10 @@
  *
  */
 
-namespace lib\Persistence;
+namespace Lib\Persistence;
 
-use lib\Database\DatabaseConnection;
-use lib\Singleton;
+use Lib\Database\DatabaseConnection;
+use Lib\Singleton;
 
 class Backend
 {
@@ -75,7 +75,7 @@ class Backend
 
     /**
      * Write a new object to the Database
-     * @param \lib\DatabaseObject $object
+     * @param \Lib\Database\DatabaseObject $object
      */
     protected function createObject($object)
     {
@@ -90,7 +90,7 @@ class Backend
 
     /**
      * Write updates of on object to the database
-     * @param \lib\DatabaseObject $object
+     * @param \Lib\Database\DatabaseObject $object
      */
     protected function updateObject($object)
     {

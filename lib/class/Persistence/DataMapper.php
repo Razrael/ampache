@@ -21,7 +21,7 @@
  *
  */
 
-namespace lib\Persistence;
+namespace Lib\Persistence;
 
 /**
  * Class ObjectMapper

@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      f:schemaLocation="https://fluidtypo3.org/schemas/fluid-master.xsd">
+
+	<f:for each="{songs}" as="song">
+		<div>
+			{song.track} - {song.title} - {song.album.name} - {song.artist.name}
+		</div>
+	</f:for>
+</html>
