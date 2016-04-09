@@ -43,7 +43,7 @@ class Metadata extends \Lib\Database\DatabaseObject implements \Lib\Interfaces\M
 
     /**
      * Tag Field
-     * @var MetadataField
+     * @var \Lib\Metadata\Model\MetadataField
      */
     protected $field;
 

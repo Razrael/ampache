@@ -43,15 +43,6 @@ abstract class DatabaseObject
      */
     protected $fieldClassRelations = array();
 
-    public function __construct()
-    {
-        $this->remapCamelcase();
-        if ($this->id) {
-            $this->initializeChildObjects();
-        }
-        //$this->originalData = get_object_vars($this);
-    }
-
     public function getId()
     {
         return $this->id;
@@ -85,22 +76,6 @@ abstract class DatabaseObject
         return $this->fromCamelCase($properties);
     }
 
-    /**
-     * Convert the object properties to camelCase.
-     * This works in constructor because the properties are here from
-     * fetch_object before the constructor get called.
-     */
-    protected function remapCamelcase()
-    {
-        foreach (get_object_vars($this) as $key => $val) {
-            if (strpos($key, '_') !== false) {
-                $camelCaseKey        = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
-                $this->$camelCaseKey = $val;
-                unset($this->$key);
-            }
-        }
-    }
-
     protected function fromCamelCase($properties)
     {
         $data = array();
@@ -109,40 +84,6 @@ abstract class DatabaseObject
             $data[$newPropertyKey] = $value;
         }
         return $data;
-    }
-
-    /**
-     * Adds child Objects based of the Model Information
-     * TODO: Someday we might need lazy loading, but for now it should be ok.
-     */
-    public function initializeChildObjects()
-    {
-        $r = new ClassType($this);
-        foreach ($r->properties as $prop) {
-            $var = $prop->getAnnotation('var');
-            if ($var) {
-                if (class_exists($var)) {
-                    $proxy       = Proxy::instantiateProxyClass($var);
-                    $id          = $this->{$prop->name};
-                    $initializer = new Initializer(function($object) use ($prop, $id, $var) {
-                        $class = \Lib\Service\Repository::getClassNameFromModel($var);
-                        $repository   = new $class;
-                        $obj = $repository->findById($id);
-                        $vars = (new ClassType($var))->properties;
-                        $reflectionClass    = new \ReflectionClass(get_class($object));
-                        foreach ($vars as $var) {
-                            $ReflectionProperty = $reflectionClass->getProperty($var->name);
-                            $ReflectionProperty->setAccessible(true);
-                            $ReflectionProperty->setValue($object, $obj->{'get' . ucfirst($var->name)}());
-                        }
-                    });
-                    $proxy->setLazyInitializer($initializer);
-                    $this->{$prop->name} = $proxy;
-                } elseif (preg_match('/(.*)<(.*)>/', $var, $matches)) {
-                    //                    var_dump($matches);
-                }
-            }
-        }
     }
 
     public function __toString()

@@ -22,7 +22,7 @@
 
 namespace Lib\Media\Model;
 
-class Album
+class Album extends Media
 {
 
     /**
@@ -61,7 +61,7 @@ class Album
     protected $releaseType;
 
     /**
-     * @var string
+     * @var \Lib\Media\Model\Artist
      */
     protected $albumArtist;
 

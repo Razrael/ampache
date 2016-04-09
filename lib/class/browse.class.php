@@ -220,14 +220,7 @@ class Browse extends Query
             case 'song':
                 $box_title = T_('Songs') . $match;
                 Song::build_cache($object_ids, $limit_threshold);
-                //$box_req = AmpConfig::get('prefix') . UI::find_template('show_songs.inc.php');
-                $view           = $this->getFluidView();
-                $songRepository = new \Lib\Media\Repository\Song();
-                $songs          = $songRepository->findAll();
-                $view->getRenderingContext()->setControllerName('Browse');
-                $view->assign('foo', 'bar');
-                $view->assign('songs', $songs);
-                echo $view->render('Songs');
+                $box_req = AmpConfig::get('prefix') . UI::find_template('show_songs.inc.php');
             break;
             case 'album':
                 Album::build_cache($object_ids);

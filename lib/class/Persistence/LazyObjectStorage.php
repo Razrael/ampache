@@ -30,7 +30,7 @@ class LazyObjectStorage implements \IteratorAggregate
 
     protected $object;
 
-    public function setInitializer($initializer)
+    public function __construct($initializer)
     {
         $this->initializer = $initializer;
     }

@@ -22,14 +22,9 @@
 
 namespace Lib\Database;
 
-use CG\Proxy\Enhancer;
-use CG\Proxy\LazyInitializerGenerator;
-use CG\Proxy\LazyInitializerInterface;
-use Lib\Database\DatabaseConnection;
-use Lib\Database\DatabaseObject;
 use Lib\Interfaces\Model;
-use Lib\Media\Model\Album;
-use Lib\Persistence\LazyObjectStorage;
+use Lib\Persistence\DataMapper;
+use Lib\Persistence\ObjectStorage;
 use Lib\Persistence\PersistenceManager;
 
 /**
@@ -39,6 +34,11 @@ use Lib\Persistence\PersistenceManager;
  */
 class Repository
 {
+    const FETCH_ASSOC = \PDO::FETCH_ASSOC;
+    const FETCH_OBJ   = \PDO::FETCH_OBJ;
+
+    protected $fetchMode;
+
     protected $modelClassName;
 
     /**
@@ -59,6 +59,11 @@ class Repository
     public function __construct()
     {
         $this->persistenceManager = PersistenceManager::getInstance();
+    }
+
+    public function setFetchMode($mode)
+    {
+        $this->fetchMode = $mode;
     }
 
     protected function findBy($fields, $values)
@@ -84,8 +89,8 @@ class Repository
      */
     public function findById($id)
     {
-        $statement = $this->findBy(array('id'), array($id));
-        return $statement->rowCount() ? $statement->fetch() : null;
+        $storage = $this->findBy(array('id'), array($id));
+        return count($storage) ? $storage->getFirst() : null;
     }
 
     /**
@@ -94,30 +99,24 @@ class Repository
      * @param $table
      * @param array $field
      * @param array $value
-     * @return mixed|\PDOStatement
+     * @return \ObjectStorage
      */
     private function getRecords($table, $field = null, $value = null)
     {
-
-        //        $r = new \ReflectionClass(self::$proxyMapping[$this->modelClassName]);
-        //        $instance = $r->newInstanceWithoutConstructor();
-        //        $instance->setLazyInitializer(new Initializer());
-        //        var_dump($instance->getTitle());
-
-        $object = new LazyObjectStorage();
-        $object->setInitializer(function () use ($table, $field, $value) {
-            $dbh = DatabaseConnection::getInstance();
-            return $dbh->from($table)
-                ->where(array_combine(
-                    array_map(array($this, 'camelCaseToUnderscore'), $field),
-                    $value
-                ))
-                //                ->asObject(self::$proxyMapping[$this->modelClassName] ?: $this->modelClassName)
-                ->asObject($this->modelClassName)
-                ->execute();
-        });
-
-        return $object;
+        $dbh       = DatabaseConnection::getInstance();
+        $statement = $dbh->from($table)
+            ->select(null)// Remove table.* clause
+            ->select(DataMapper::getSelectFields($table))
+            ->where(array_combine(
+                array_map(array($this, 'camelCaseToUnderscore'), $field),
+                $value
+            ))
+            ->asObject($this->modelClassName)
+            ->execute();
+        if ($this->fetchMode) {
+            $statement->setFetchMode($this->fetchMode);
+        }
+        return new ObjectStorage($statement);
     }
 
     /**

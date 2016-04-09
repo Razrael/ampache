@@ -22,7 +22,7 @@
 
 namespace Lib\Media\Model;
 
-class Artist
+class Artist extends Media
 {
     /**
      * @var string

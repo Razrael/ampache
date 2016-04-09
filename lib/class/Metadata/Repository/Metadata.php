@@ -22,6 +22,8 @@
 
 namespace Lib\Metadata\Repository;
 
+use Lib\Media\Model\Song;
+
 /**
  * Description of Metadata
  *
@@ -34,6 +36,11 @@ class Metadata extends \Lib\Database\Repository
     public static function gc()
     {
         \Dba::write('DELETE FROM `metadata` USING `metadata` LEFT JOIN `song` ON `song`.`id` = `metadata`.`object_id` WHERE `song`.`id` IS NULL');
+    }
+
+    public function findBySong(Song $song)
+    {
+        return $this->findByObjectIdAndType($song, 'Song');
     }
 
     //put your code here

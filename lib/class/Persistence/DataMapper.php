@@ -23,12 +23,17 @@
 
 namespace Lib\Persistence;
 
+use Lib\Database\DatabaseConnection;
+use Lib\Service\StringConversion;
+
 /**
  * Class ObjectMapper
  * @package lib\Persistence
  */
 class DataMapper
 {
+    protected static $tableSelectString = [];
+
     /**
      * Get a table name out of the objects class name.
      * @param $model
@@ -42,5 +47,47 @@ class DataMapper
             (new \ReflectionClass($model))->getShortName()
         );
         return strtolower($table);
+    }
+
+    /**
+     * Get all select fields including aliases
+     * @param $table
+     * @return string
+     */
+    public static function getSelectFields($table)
+    {
+        if (!array_key_exists($table, self::$tableSelectString)) {
+            $fields                          = self::getTableFields($table);
+            $map                             = self::getFieldMap($fields);
+            self::$tableSelectString[$table] = self::getSqlSelectString($map);
+        }
+        return self::$tableSelectString[$table];
+    }
+
+    protected static function getSqlSelectString($fields)
+    {
+        $map = [];
+        foreach ($fields as $field => $alias) {
+            $map[] = $field . ' AS ' . $alias;
+        }
+        return implode(',', $map);
+    }
+
+    protected static function getTableFields($table)
+    {
+        return DatabaseConnection::getInstance()
+            ->getPdo()
+            ->query('DESCRIBE ' . $table)
+            ->fetchAll();
+    }
+
+    protected static function getFieldMap($fields)
+    {
+        $map = [];
+        foreach ($fields as $field) {
+            $map[$field->Field] = strpos($field->Field,
+                '_') !== false ? StringConversion::underscoreToCamelCase($field->Field) : $field->Field;
+        }
+        return $map;
     }
 }

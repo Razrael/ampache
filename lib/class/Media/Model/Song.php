@@ -485,4 +485,20 @@ class Song extends Media implements Model
     {
         $this->channels = $channels;
     }
+
+    /**
+     * @return \Lib\Persistence\LazyObjectStorage
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param \Lib\Persistence\LazyObjectStorage $metadata
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+    }
 }
