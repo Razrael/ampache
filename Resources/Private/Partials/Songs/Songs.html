@@ -1,0 +1,24 @@
+<a:widget.paginate objects="{songs}" configuration="{}" as="paginatedSongs">
+	<f:for each="{paginatedSongs}" as="song" iteration="iterator">
+		<tr id="song_{song.id}" class="{f:if condition: iterator.isEven, then: 'even', else: 'odd'}">
+			<td></td>
+			<td class="cel_song essential persist">
+				<a:link.action page="song.php" action="show_song" title="{song.title}" arguments="{song_id: song.id}">
+					{song.title}
+				</a:link.action>
+			</td>
+			<td></td>
+			<td>
+				<a title="{song.artist.name}">{song.artist.name}</a>
+			</td>
+			<td>
+				<a title="{song.album.name}">{song.album.name}</a>
+			</td>
+			<td></td>
+			<td>
+				{song.time -> a:format.strftime(format: '%M:%S')}
+			</td>
+
+		</tr>
+	</f:for>
+</a:widget.paginate>

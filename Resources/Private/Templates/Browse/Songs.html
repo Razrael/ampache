@@ -1,10 +1,49 @@
+<f:layout name="Default" />
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
       xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:a="lib"
       f:schemaLocation="https://fluidtypo3.org/schemas/fluid-master.xsd">
 
-	<f:for each="{songs}" as="song">
-		<div>
-			{song.track} - {song.title} - {song.album.name} - {song.artist.name}
-		</div>
-	</f:for>
+
+	<f:section name="main">
+		<table id="reorder_songs_table_" class="tabledata  activeMediaTable" data-objecttype="song" data-offset="0" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr class="th-top">
+					<th id="reorder_songs_table_-mediaTableCol-0" class="cel_play essential"></th>
+					<th id="reorder_songs_table_-mediaTableCol-1" class="cel_song essential persist"><a href="javascript:void(0);" id="sort_song_title158_1460231942_9">Songtitel</a>
+						<script type="text/javascript">$('#sort_song_title158_1460231942_9').on('click', function(){ update_action(); ajaxPut('http://localhost/ampache/server/ajax.server.php?page=browse&action=set_sort&browse_id=158&sort=title','sort_song_title158_1460231942_9');});</script></th>
+					<th id="reorder_songs_table_-mediaTableCol-2" class="cel_add essential"></th>
+					<th id="reorder_songs_table_-mediaTableCol-3" class="cel_artist optional"><a href="javascript:void(0);" id="sort_song_artist158_1460231942_10">Interpret</a>
+						<script type="text/javascript">$('#sort_song_artist158_1460231942_10').on('click', function(){ update_action(); ajaxPut('http://localhost/ampache/server/ajax.server.php?page=browse&action=set_sort&browse_id=158&sort=artist','sort_song_artist158_1460231942_10');});</script></th>
+					<th id="reorder_songs_table_-mediaTableCol-4" class="cel_album essential"><a href="javascript:void(0);" id="sort_song_album158_1460231942_11">Album</a>
+						<script type="text/javascript">$('#sort_song_album158_1460231942_11').on('click', function(){ update_action(); ajaxPut('http://localhost/ampache/server/ajax.server.php?page=browse&action=set_sort&browse_id=158&sort=album','sort_song_album158_1460231942_11');});</script></th>
+					<th id="reorder_songs_table_-mediaTableCol-5" class="cel_tags optional">Tags</th>
+					<th id="reorder_songs_table_-mediaTableCol-6" class="cel_time optional"><a href="javascript:void(0);" id="sort_song_time158_1460231942_12">Dauer</a>
+						<script type="text/javascript">$('#sort_song_time158_1460231942_12').on('click', function(){ update_action(); ajaxPut('http://localhost/ampache/server/ajax.server.php?page=browse&action=set_sort&browse_id=158&sort=time','sort_song_time158_1460231942_12');});</script></th>
+					<th id="reorder_songs_table_-mediaTableCol-7" class="cel_rating optional">Bewertung</th>
+					<th id="reorder_songs_table_-mediaTableCol-8" class="cel_userflag optional">Fav.</th>
+					<th id="reorder_songs_table_-mediaTableCol-9" class="cel_action essential">Aktion</th>
+				</tr>
+			</thead>
+
+			<tbody class="ui-sortable" id="sortableplaylist_">
+				<f:render partial="Songs/Songs" arguments="{songs: songs}" />
+			</tbody>
+		</table>
+	</f:section>
+
+	<f:section name="test">
+		<f:for each="{songs}" as="song">
+			<div>
+				{song.track} - {song.title} - {song.album.name} - {song.artist.name} - {song.album.albumArtist.name}
+
+				<f:for each="{song.metadata}" as="metadata">
+					<div>
+						{metadata.field.name} - {metadata.data}
+					</div>
+				</f:for>
+			</div>
+		</f:for>
+	</f:section>
 </html>
