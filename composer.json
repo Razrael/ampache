@@ -358,6 +358,9 @@
     },
 
 	"autoload": {
+		"classmap": [
+			"lib/class"
+		],
 		"psr-4": {
 			"Lib\\": "lib/class"
 		}

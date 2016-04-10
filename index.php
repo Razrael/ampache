@@ -20,7 +20,11 @@
  *
  */
 
-require_once 'lib/init.php';
+require __DIR__ . '/lib/vendor/autoload.php';
+
+\Lib\Core\Bootstrap::getInstance()->run();
+
+exit;
 
 UI::show_header();
 

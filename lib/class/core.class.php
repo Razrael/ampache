@@ -116,7 +116,7 @@ class Core
     private static function getNonNamespacedPaths($class)
     {
         $possiblePaths   = array();
-        $possiblePaths[] = AmpConfig::get('prefix') . '/lib/class/' .
+        $possiblePaths[] = AMPACHE_PATH . '/lib/class/' .
                 strtolower($class) . '.class.php';
 
         return $possiblePaths;

@@ -65,7 +65,7 @@ class ActionViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $arguments['value'];
+        $value = $arguments['value'] ?? null;
         if ($value === null) {
             $value = $renderChildrenClosure();
         }

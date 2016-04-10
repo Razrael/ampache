@@ -101,7 +101,7 @@ class Repository
      * @param array $value
      * @return \ObjectStorage
      */
-    private function getRecords($table, $field = null, $value = null)
+    private function getRecords($table, $field = array(), $value = array())
     {
         $dbh       = DatabaseConnection::getInstance();
         $statement = $dbh->from($table)
